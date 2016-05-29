@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema version="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://researchgraph.org/schema/v2.0/xml/nodes"
+        targetNamespace="http://researchgraph.org/schema/v2.0/xml/nodes" elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+    
+    <xsd:element name="relation">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="from_key" type="xsd:anyURI" minOccurs="1" maxOccurs="1">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                            The key value for the source objecy. This key (value of this element) should exist in the registry.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="to_uri" type="xsd:anyURI" minOccurs="0" maxOccurs="1">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                            Enables the connection to ORCID, DOI (publication or dataset), PURL (grant, or ANZSRC field of research), or key of other nodes. 
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>                
+                <xsd:element name="label" type="xsd:string" minOccurs="0" maxOccurs="1" default="relatedTo" />  
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+    
+    
+

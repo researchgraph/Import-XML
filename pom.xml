@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.rdswitchboard</groupId>
+  <artifactId>inference</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4.0</version>
+  <name>Inference</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <class.path>jars/</class.path>
+    <jdk.version>1.7</jdk.version>
+    <junit.version>4.11</junit.version>
+    <commons.io.version>2.4</commons.io.version>
+    <commons.lang.version>2.6</commons.lang.version>
+    <aws-java-sdk.version>1.9.39</aws-java-sdk.version>
+    <jackson.version>2.5.0</jackson.version>
+    <jersey.version>1.9</jersey.version>
+    <neo4j.version>3.0.2</neo4j.version>
+    <opencsv.version>2.3</opencsv.version>
+    <mysql.version>5.1.35</mysql.version>
+    <guava.version>18.0</guava.version>
+    <jaxb.api.version>2.2.11</jaxb.api.version>
+    <joda-time.version>2.9.2</joda-time.version>
+  </properties>
+
+  <modules>
+	<module>properties</module>
+  	<module>graph_utils</module>
+  	<module>neo4j_utils</module>
+    <module>import_rg</module>
+  </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${jdk.version}</source>
+            <target>${jdk.version}</target>
+          </configuration>
+        </plugin>
+ 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.9</version> 
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>jaxb2-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+	  <version>2.5.5</version>
+          <configuration>
+            <descriptor>src/assembly/bin.xml</descriptor>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

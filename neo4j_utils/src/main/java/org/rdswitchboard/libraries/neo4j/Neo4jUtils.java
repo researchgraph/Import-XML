@@ -20,7 +20,6 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.schema.ConstraintDefinition;
 import org.neo4j.graphdb.schema.IndexDefinition;
 import org.neo4j.graphdb.schema.Schema;
-import org.neo4j.tooling.GlobalGraphOperations;
 
 /**
  * Neo4jUtils class
@@ -61,7 +60,7 @@ public class Neo4jUtils {
 		
 		try {
 			GraphDatabaseService graphDb = new GraphDatabaseFactory()
-				.newEmbeddedDatabaseBuilder( GetDbPath(graphDbPath).toString() )
+				.newEmbeddedDatabaseBuilder( GetDbPath(graphDbPath) )
 				.loadPropertiesFromFile( GetConfPath(graphDbPath).toString() )
 				.setConfig( GraphDatabaseSettings.read_only, "true" )
 				.newGraphDatabase();
@@ -80,7 +79,7 @@ public class Neo4jUtils {
 		
 		try {
 			GraphDatabaseService graphDb = new GraphDatabaseFactory()
-				.newEmbeddedDatabaseBuilder( GetDbPath(graphDbPath).toString() )
+				.newEmbeddedDatabaseBuilder( GetDbPath(graphDbPath) )
 				.loadPropertiesFromFile( GetConfPath(graphDbPath).toString() )
 				.newGraphDatabase();
 		
@@ -129,10 +128,6 @@ public class Neo4jUtils {
 		return createConstrant(graphDb, DynamicLabel.label(label), key);
 	}
 	
-	@Deprecated
-	public static GlobalGraphOperations getGlobalOperations(final GraphDatabaseService graphDb) {
-		return GlobalGraphOperations.at(graphDb);
-	}
 	
 	@Deprecated
 	public static IndexDefinition createIndex(final GraphDatabaseService graphDb, 

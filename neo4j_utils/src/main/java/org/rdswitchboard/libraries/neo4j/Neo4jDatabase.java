@@ -28,7 +28,6 @@ import org.neo4j.graphdb.index.ReadableIndex;
 import org.neo4j.graphdb.schema.ConstraintDefinition;
 import org.neo4j.graphdb.schema.IndexDefinition;
 import org.neo4j.graphdb.schema.Schema;
-import org.neo4j.tooling.GlobalGraphOperations;
 import org.rdswitchboard.libraries.graph.Graph;
 import org.rdswitchboard.libraries.graph.GraphKey;
 import org.rdswitchboard.libraries.graph.GraphNode;
@@ -69,9 +68,6 @@ public class Neo4jDatabase implements GraphImporter {
 		return graphDb;
 	}
 		
-	public GlobalGraphOperations getGlobalOperations() {
-		return GlobalGraphOperations.at(graphDb);
-	}
 	
 	/*public static ExecutionEngine getExecutionEngine( final GraphDatabaseService graphDb ) {
 		return new ExecutionEngine(graphDb, StringLogger.SYSTEM);
@@ -130,7 +126,7 @@ public class Neo4jDatabase implements GraphImporter {
 	public void enumrateAllNodes(ProcessNode processNode) throws Exception {
 		try ( Transaction tx = graphDb.beginTx() ) 
 		{
-			ResourceIterable<Node> nodes = getGlobalOperations().getAllNodes();
+			ResourceIterable<Node> nodes = graphDb.getAllNodes();
 			for (Node node : nodes) {
 				if (!processNode.processNode(node))
 					break;
@@ -143,8 +139,6 @@ public class Neo4jDatabase implements GraphImporter {
 	public void enumrateAllNodesWithLabel(Label label, ProcessNode processNode) throws Exception {
 		try ( Transaction tx = graphDb.beginTx() ) 
 		{
-//			GlobalGraphOperations global = Neo4jUtils.getGlobalOperations(graphDb);
-//			global.
 			
 			try (ResourceIterator<Node> nodes = graphDb.findNodes(label)) {
 				while (nodes.hasNext()) {

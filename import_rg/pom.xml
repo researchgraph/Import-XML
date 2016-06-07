@@ -20,6 +20,12 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
+        <configuration>
+    	  <!-- Needed with JAXP 1.5 -->
+    	  <vmArgs>
+        	<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+    	  </vmArgs>
+  		</configuration>
         <executions>
           <execution>
             <id>xjc</id>

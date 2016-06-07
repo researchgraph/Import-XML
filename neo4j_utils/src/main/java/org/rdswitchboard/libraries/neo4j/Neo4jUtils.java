@@ -30,8 +30,10 @@ import org.neo4j.graphdb.schema.Schema;
  */
 
 public class Neo4jUtils {
-	public static final String NEO4J_CONF = "/conf/neo4j.properties";
-	public static final String NEO4J_DB = "/data/graph.db";
+	public static final String NEO4J_CONF = "/conf/neo4j.conf";
+	public static final String NEO4J_DB = "/data/databases/graph.db";
+//	public static final String NEO4J_CONF = "/conf/neo4j.properties";
+//	public static final String NEO4J_DB = "/data/graph.db";
 	
 	public static File GetDbPath(final String folder) throws Neo4jException, IOException
 	{

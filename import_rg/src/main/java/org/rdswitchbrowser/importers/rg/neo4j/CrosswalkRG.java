@@ -514,22 +514,22 @@ public class CrosswalkRG implements GraphCrosswalk {
 	
 	private boolean processRelation(final Relation relation, final Graph graph) {
 		if (verbose) 
-			System.out.println("Processing Publication");
+			System.out.println("Processing new Relation");
 	
 		String label = relation.getLabel();
 		if (!StringUtils.isEmpty(label)) 
 			label = GraphUtils.RELATIONSHIP_RELATED_TO;
-			
+
 		String from = relation.getFromKey();
-		if (!StringUtils.isEmpty(from)) {
+		if (StringUtils.isEmpty(from)) {
 			return false;
 		}
-		
+
 		String to = relation.getToUri();
-		if (!StringUtils.isEmpty(to)) {
+		if (StringUtils.isEmpty(to)) {
 			return false;
 		}
-			
+	
 		GraphRelationship relationship = new GraphRelationship()
 				.withRelationship(label)
 				.withStart(source, from)

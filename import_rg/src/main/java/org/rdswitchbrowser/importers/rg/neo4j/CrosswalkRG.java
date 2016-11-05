@@ -489,11 +489,8 @@ public class CrosswalkRG implements GraphCrosswalk {
 			node.setProperty(GraphUtils.PROPERTY_TITLE, title);
 		
 		String authorsList = publication.getAuthorsList();
-		if (!StringUtils.isEmpty(authorsList)) {
-			String[] authors = authorsList.trim().split("\\s*,\\s*");
-			if (authors.length > 0)
-				node.setProperty(GraphUtils.PROPERTY_AUTHORS, authors);
-		}
+		if (!StringUtils.isEmpty(authorsList)) 
+			node.setProperty(GraphUtils.PROPERTY_AUTHORS, authorsList);
 		
 		String doi = GraphUtils.extractDoi(publication.getDoi());
 		if (!StringUtils.isEmpty(doi)) 

@@ -12,17 +12,17 @@ import org.apache.commons.lang.StringUtils;
 
 public class GraphUtils {
 	// schema fields
-	public static final String SCHEMA_LABEL = "label";
-	public static final String SCHEMA_INDEX = "index";
-	public static final String SCHEMA_UNIQUE = "unique";
+	public static final String SCHEMA_LABEL = "label"; //never used
+	public static final String SCHEMA_INDEX = "index"; //never used
+	public static final String SCHEMA_UNIQUE = "unique"; //never used
 	
 	// required properties
-	public static final String PROPERTY_INDEX = "index";
-	public static final String PROPERTY_KEY = "key";
-	public static final String PROPERTY_SOURCE = "node_source";
-	public static final String PROPERTY_TYPE = "node_type";
+	public static final String PROPERTY_INDEX = "index"; //never used
+	public static final String PROPERTY_KEY = "key"; 
+	public static final String PROPERTY_SOURCE = "node_source"; //TODO: change to source 
+	public static final String PROPERTY_TYPE = "node_type"; // TODO: change to type 
 	public static final String PROPERTY_TITLE = "title";
-	public static final String PROPERTY_RDS_URL = "rds_url";
+	public static final String PROPERTY_RDS_URL = "rds_url"; //never used
 	
 	// properties required for meta-data harmonization  
 	public static final String PROPERTY_URL = "url"; 
@@ -32,34 +32,34 @@ public class GraphUtils {
 	public static final String PROPERTY_DOI = "doi";
 	public static final String PROPERTY_PURL = "purl";
 	public static final String PROPERTY_LOCAL_ID = "local_id";
-	public static final String PROPERTY_NAME_PREFIX = "name_prefix";
+	public static final String PROPERTY_NAME_PREFIX = "name_prefix"; //never used
 	public static final String PROPERTY_FIRST_NAME = "first_name";
-	public static final String PROPERTY_MIDDLE_NAME = "middle_name";
+	public static final String PROPERTY_MIDDLE_NAME = "middle_name"; //never used
 	public static final String PROPERTY_LAST_NAME = "last_name";
 	public static final String PROPERTY_FULL_NAME = "full_name";
-	public static final String PROPERTY_COUNTRY = "country";
-	public static final String PROPERTY_STATE = "state";
-	public static final String PROPERTY_HOST = "host";
-	public static final String PROPERTY_PATTERN = "pattern";
-	public static final String PROPERTY_ORIGINAL_SOURCE = "original_source";
+	public static final String PROPERTY_COUNTRY = "country"; //never used
+	public static final String PROPERTY_STATE = "state"; //never used
+	public static final String PROPERTY_HOST = "host"; //never used
+	public static final String PROPERTY_PATTERN = "pattern"; //never used
+	public static final String PROPERTY_ORIGINAL_SOURCE = "original_source"; //never used
 	public static final String PROPERTY_SCOPUS_ID = "scopus_id";
 	public static final String PROPERTY_SCOPUS_EID = "scopus_eid";
 	public static final String PROPERTY_ORCID_ID = "orcid";
-	public static final String PROPERTY_ANDS_GROUP = "ands_group";
-	public static final String PROPERTY_AWARDED_DATE = "awarded_date";
-	public static final String PROPERTY_PUBLISHED_DATE = "published_date";
-	public static final String PROPERTY_ARC_ID = "arc_id";
-	public static final String PROPERTY_NHMRC_ID = "nhmrc_id";
-	public static final String PROPERTY_ISBN = "isbn";
-	public static final String PROPERTY_ISSN = "issn";
-	public static final String PROPERTY_INSPIRE_ID = "inspire_id";
+	public static final String PROPERTY_ANDS_GROUP = "ands_group"; //never used
+	public static final String PROPERTY_AWARDED_DATE = "awarded_date"; //never used
+	public static final String PROPERTY_PUBLISHED_DATE = "published_date"; //never used
+	public static final String PROPERTY_ARC_ID = "arc_id"; // TODO: we will use local_id instead of local_id 
+	public static final String PROPERTY_NHMRC_ID = "nhmrc_id"; // TODO: we will use local_id 
+	public static final String PROPERTY_ISBN = "isbn"; //never used
+	public static final String PROPERTY_ISSN = "issn"; //never used
+	public static final String PROPERTY_INSPIRE_ID = "inspire_id"; //never used
 	//public static final String PROPERTY_OAI = "oai";
-	public static final String PROPERTY_AUTHORS = "authors";
+	public static final String PROPERTY_AUTHORS = "authors_list";
 	public static final String PROPERTY_PARTICIPANTS = "participants";
-	public static final String PROPERTY_REFERENCED_BY = "referenced_by"; // temporary for Dryad
-	public static final String PROPERTY_ORIGINAL_KEY = "original_key";
-	public static final String PROPERTY_DARA_ID = "dara_id";
-	public static final String PROPERTY_TITLE_LANGUAGE = "title_language";
+	public static final String PROPERTY_REFERENCED_BY = "referenced_by"; // temporary for Dryad    //never used
+	public static final String PROPERTY_ORIGINAL_KEY = "original_key"; //never used
+	public static final String PROPERTY_DARA_ID = "dara_id"; //never used
+	public static final String PROPERTY_TITLE_LANGUAGE = "title_language";  //never used
 	public static final String PROPERTY_VERSION = "version";
 	public static final String PROPERTY_LAST_UPDATED = "last_updated";
 	public static final String PROPERTY_FUNDER = "funder";
@@ -75,7 +75,7 @@ public class GraphUtils {
 	
 	// meta-data sources
 	public static final String SOURCE_SYSTEM = "system";
-	public static final String SOURCE_ANDS = "ands";
+	public static final String SOURCE_ANDS = "ands"; // TODO: please check that we do not hardcode these values. These should come from the configue file.
 	public static final String SOURCE_ARC = "arc";
 	public static final String SOURCE_NHMRC = "nhmrc";
 	public static final String SOURCE_WEB = "web";
@@ -91,20 +91,20 @@ public class GraphUtils {
 	public static final String TYPE_DATASET = "dataset";
 	public static final String TYPE_GRANT = "grant";
 	public static final String TYPE_RESEARCHER = "researcher";
-	public static final String TYPE_INSTITUTION = "institution";
-	public static final String TYPE_SERVICE = "service";
+	public static final String TYPE_INSTITUTION = "institution"; //never used
+	public static final String TYPE_SERVICE = "service"; //never used
 	public static final String TYPE_PUBLICATION = "publication";
-	public static final String TYPE_PATTERN = "pattern";
-	public static final String TYPE_VERSION = "version";
+	public static final String TYPE_PATTERN = "pattern"; //never used
+	public static final String TYPE_VERSION = "version"; //never used
 	
 	// relationships
 	
 	public static final String RELATIONSHIP_RELATED_TO = "relatedTo";
-	public static final String RELATIONSHIP_KNOWN_AS = "knownAs";
-	public static final String RELATIONSHIP_AUTHOR = "author";
-	public static final String RELATIONSHIP_PATTERN = "pattern";
-	public static final String RELATIONSHIP_ADMINISTRATOR = "administrator";
-	public static final String RELATIONSHIP_INVESTIGATOR = "investigator";
+	public static final String RELATIONSHIP_KNOWN_AS = "knownAs"; //never used
+	public static final String RELATIONSHIP_AUTHOR = "author"; //never used
+	public static final String RELATIONSHIP_PATTERN = "pattern"; //never used
+	public static final String RELATIONSHIP_ADMINISTRATOR = "administrator"; //never used
+	public static final String RELATIONSHIP_INVESTIGATOR = "investigator"; //never used
 	
 	public static final String SCOPUS_PARTNER_ID = "MN8TOARS";
 	

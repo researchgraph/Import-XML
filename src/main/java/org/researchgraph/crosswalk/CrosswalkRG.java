@@ -507,11 +507,8 @@ public class CrosswalkRG implements GraphCrosswalk {
 			node.setProperty(GraphUtils.PROPERTY_TITLE, title);
 		
 		String authorsList = publication.getAuthorsList();
-		if (!StringUtils.isEmpty(authorsList)) {
-			String[] authors = authorsList.trim().split("\\s*,\\s*");
-			if (authors.length > 0)
-				node.setProperty(GraphUtils.PROPERTY_AUTHORS, authors);
-		}
+		if (!StringUtils.isEmpty(authorsList))
+			node.setProperty(GraphUtils.PROPERTY_AUTHORS, authorsList);
 		
 		String doi = GraphUtils.extractDoi(publication.getDoi());
 		if (!StringUtils.isEmpty(doi)) 
@@ -532,19 +529,19 @@ public class CrosswalkRG implements GraphCrosswalk {
 	
 	private boolean processRelation(final Relation relation, final Graph graph) {
 		if (verbose) 
-			System.out.println("Processing Publication");
+			System.out.println("Processing new Relation");
 	
 		String label = relation.getLabel();
 		if (!StringUtils.isEmpty(label)) 
 			label = GraphUtils.RELATIONSHIP_RELATED_TO;
 			
 		String from = relation.getFromKey();
-		if (!StringUtils.isEmpty(from)) {
+		if (StringUtils.isEmpty(from)) {
 			return false;
 		}
 		
 		String to = relation.getToUri();
-		if (!StringUtils.isEmpty(to)) {
+		if (StringUtils.isEmpty(to)) {
 			return false;
 		}
 			

@@ -33,7 +33,7 @@ import org.researchgraph.graph.GraphKey;
 import org.researchgraph.graph.GraphNode;
 import org.researchgraph.graph.GraphRelationship;
 import org.researchgraph.graph.GraphSchema;
-import org.researchgraph.interfaces.GraphImporter;
+import org.researchgraph.graph.interfaces.GraphImporter;
 import org.researchgraph.neo4j.interfaces.ProcessNode;
 
 public class Neo4jDatabase implements GraphImporter {

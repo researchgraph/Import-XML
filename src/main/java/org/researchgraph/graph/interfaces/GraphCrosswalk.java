@@ -1,4 +1,4 @@
-package org.researchgraph.interfaces;
+package org.researchgraph.graph.interfaces;
 
 import java.io.InputStream;
 

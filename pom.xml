@@ -7,7 +7,7 @@
   <name>Neo4J Importer</name>
  
   <properties>
-    <main.class>org.rdswitchbrowser.importers.rg.neo4j.App</main.class>
+    <main.class>org.researchgraph.app.App</main.class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <class.path>jars/</class.path>
     <jdk.version>1.8</jdk.version>

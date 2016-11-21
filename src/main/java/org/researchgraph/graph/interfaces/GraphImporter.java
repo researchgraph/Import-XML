@@ -1,4 +1,4 @@
-package org.researchgraph.interfaces;
+package org.researchgraph.graph.interfaces;
 
 import java.util.Collection;
 

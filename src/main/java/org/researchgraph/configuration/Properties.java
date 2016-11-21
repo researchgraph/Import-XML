@@ -31,6 +31,7 @@ public class Properties {
 	public static final String PROPERTY_HELP = "help";
 	
 	public static final String DEFAULT_NEO4J_FOLDER = "neo4j";
+	public static final String DEFAULT_VERSIONS_FOLDER = "versions";
 	
 	public static Configuration fromArgs(String[] args) throws Exception {
 		CommandLineParser parser = new DefaultParser();
@@ -45,6 +46,7 @@ public class Properties {
 		options.addOption( "s", PROPERTY_SOURCE, true, "Source name" );
 		options.addOption( "C", PROPERTY_CROSSWALK, true, "Crosswalk" );
 		options.addOption( "c", PROPERTY_CONFIG_FILE, true, "configuration file (optional)" );
+		options.addOption( "v", PROPERTY_VERSIONS_FOLDER, true, "versions folder" );
 		options.addOption( "h", PROPERTY_HELP, false, "print this message" );
 
 		// parse the command line arguments
@@ -52,7 +54,7 @@ public class Properties {
 
 		if (line.hasOption( PROPERTY_HELP )) {
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp( "java -jar neo4j-import-orcid-[verion].jar [PARAMETERS]", options );
+			formatter.printHelp( "java -jar neo4j-importer-[verion].jar [PARAMETERS]", options );
             
             System.exit(0);
 		}
@@ -62,6 +64,7 @@ public class Properties {
 		
 		BaseConfiguration defaultConfig = new BaseConfiguration();
 		defaultConfig.setProperty( PROPERTY_NEO4J_FOLDER, DEFAULT_NEO4J_FOLDER );
+		defaultConfig.setProperty( DEFAULT_VERSIONS_FOLDER, DEFAULT_VERSIONS_FOLDER );
 		
 		BaseConfiguration commandLineConfig = new BaseConfiguration();
 		
@@ -97,6 +100,10 @@ public class Properties {
 		// the program has default output file, but input file must be presented
 		if ( !config.containsKey( PROPERTY_SOURCE ) )
 			throw new Exception("Please provide Source Name");
+		
+		// the program has default output file, but input file must be presented
+		if ( !config.containsKey( DEFAULT_VERSIONS_FOLDER ) )
+			throw new Exception("Please provide Versions Folder");
 				 
 		return config;
 	}

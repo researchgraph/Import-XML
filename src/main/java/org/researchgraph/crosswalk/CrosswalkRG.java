@@ -27,7 +27,7 @@ import org.researchgraph.graph.GraphNode;
 import org.researchgraph.graph.GraphRelationship;
 import org.researchgraph.graph.GraphSchema;
 import org.researchgraph.graph.GraphUtils;
-import org.researchgraph.interfaces.GraphCrosswalk;
+import org.researchgraph.graph.interfaces.GraphCrosswalk;
 import org.researchgraph.schema.v2_0.xml.nodes.Dataset;
 import org.researchgraph.schema.v2_0.xml.nodes.Grant;
 import org.researchgraph.schema.v2_0.xml.nodes.Publication;

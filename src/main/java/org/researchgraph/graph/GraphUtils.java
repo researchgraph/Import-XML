@@ -47,7 +47,7 @@ public class GraphUtils {
 	public static final String PROPERTY_ORCID_ID = "orcid";
 //	public static final String PROPERTY_ANDS_GROUP = "ands_group";
 //	public static final String PROPERTY_AWARDED_DATE = "awarded_date";
-//	public static final String PROPERTY_PUBLISHED_DATE = "published_date";
+	public static final String PROPERTY_PUBLISHED_YEAR = "published_year";
 //	public static final String PROPERTY_ARC_ID = "arc_id";
 //	public static final String PROPERTY_NHMRC_ID = "nhmrc_id";
 //	public static final String PROPERTY_ISBN = "isbn";

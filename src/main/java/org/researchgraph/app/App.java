@@ -1,4 +1,4 @@
-package org.researchgraph.importer.app;
+package org.researchgraph.app;
 	   
 import java.io.ByteArrayInputStream;
 import java.io.File;

@@ -32,6 +32,7 @@ public class Properties {
 	
 	public static final String DEFAULT_NEO4J_FOLDER = "neo4j";
 	public static final String DEFAULT_VERSIONS_FOLDER = "versions";
+	public static final String DEFAULT_XML_TYPE = "rg";
 	
 	public static Configuration fromArgs(String[] args) throws Exception {
 		CommandLineParser parser = new DefaultParser();
@@ -64,20 +65,23 @@ public class Properties {
 		
 		BaseConfiguration defaultConfig = new BaseConfiguration();
 		defaultConfig.setProperty( PROPERTY_NEO4J_FOLDER, DEFAULT_NEO4J_FOLDER );
-		defaultConfig.setProperty( DEFAULT_VERSIONS_FOLDER, DEFAULT_VERSIONS_FOLDER );
+		defaultConfig.setProperty( PROPERTY_VERSIONS_FOLDER, DEFAULT_VERSIONS_FOLDER );
+		defaultConfig.setProperty( PROPERTY_XML_TYPE, DEFAULT_XML_TYPE );
 		
 		BaseConfiguration commandLineConfig = new BaseConfiguration();
 		
 		Path configurationFile = null;
 		
+		System.out.println("Command Line: " + line.getOptionValue(PROPERTY_SOURCE));
+		
 		for (Option option : line.getOptions()) {
 			if ( PROPERTY_CONFIG_FILE.equals(option.getArgName()) ) {
 				configurationFile = Paths.get(option.getValue());
 			} else {
-				commandLineConfig.setProperty(option.getArgName(), option.getValue());
+				commandLineConfig.setProperty(option.getLongOpt(), option.getValue());
 			}
 		}
-		
+			
 		if (null == configurationFile) {
 			configurationFile = CONFIG_FILE;
 		}
@@ -92,7 +96,7 @@ public class Properties {
 		
 		config.addConfiguration(commandLineConfig);
 		config.addConfiguration(defaultConfig);
-		
+			
 		// the program has default output file, but input file must be presented
 		if ( !config.containsKey( PROPERTY_NEO4J_FOLDER ) )
 			throw new Exception("Please specify Neo4J folder file");
@@ -102,7 +106,7 @@ public class Properties {
 			throw new Exception("Please provide Source Name");
 		
 		// the program has default output file, but input file must be presented
-		if ( !config.containsKey( DEFAULT_VERSIONS_FOLDER ) )
+		if ( !config.containsKey( PROPERTY_VERSIONS_FOLDER ) )
 			throw new Exception("Please provide Versions Folder");
 				 
 		return config;

@@ -5,3 +5,9 @@ To compile with Java 8, create a file named `jaxp.properties` (if it doesn't exi
 ```
 javax.xml.accessExternalSchema = all
 ```
+
+or just execute 
+
+```
+mvn clean package -Djavax.xml.accessExternalSchema=all
+```

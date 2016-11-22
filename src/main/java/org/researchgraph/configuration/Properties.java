@@ -72,8 +72,6 @@ public class Properties {
 		
 		Path configurationFile = null;
 		
-		System.out.println("Command Line: " + line.getOptionValue(PROPERTY_SOURCE));
-		
 		for (Option option : line.getOptions()) {
 			if ( PROPERTY_CONFIG_FILE.equals(option.getArgName()) ) {
 				configurationFile = Paths.get(option.getValue());

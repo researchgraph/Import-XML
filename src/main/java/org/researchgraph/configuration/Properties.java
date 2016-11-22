@@ -73,7 +73,7 @@ public class Properties {
 		Path configurationFile = null;
 		
 		for (Option option : line.getOptions()) {
-			if ( PROPERTY_CONFIG_FILE.equals(option.getArgName()) ) {
+			if ( PROPERTY_CONFIG_FILE.equals(option.getLongOpt()) ) {
 				configurationFile = Paths.get(option.getValue());
 			} else {
 				commandLineConfig.setProperty(option.getLongOpt(), option.getValue());

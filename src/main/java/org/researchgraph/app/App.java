@@ -76,6 +76,7 @@ public class App {
 	        if (!StringUtils.isEmpty(bucket) && !StringUtils.isEmpty(prefix)) {
 	        	System.out.println("S3 Bucket: " + bucket);
 	        	System.out.println("S3 Prefix: " + prefix);
+				System.out.println("Version folder: " + Properties.PROPERTY_VERSIONS_FOLDER);
 
 	        	String versionFolder = properties.getString(Properties.PROPERTY_VERSIONS_FOLDER);
 		        if (StringUtils.isEmpty(versionFolder))

@@ -20,6 +20,7 @@
     <neo4j.version>3.0.6</neo4j.version>
     <jaxb-api.version>2.2.11</jaxb-api.version>
     <joda-time.version>2.9.2</joda-time.version>
+    <saxon.version>9.5.0.1</saxon.version>
   </properties>
 
   <build>
@@ -101,6 +102,11 @@
   </build>  
   
   <dependencies>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>${saxon.version}</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

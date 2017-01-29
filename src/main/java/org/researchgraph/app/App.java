@@ -13,6 +13,9 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.*;
+
+
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -52,15 +55,20 @@ public class App {
 	        String xmlType = properties.getString(Properties.PROPERTY_XML_TYPE);
 	        String source = properties.getString(Properties.PROPERTY_SOURCE);
 	        String crosswalk = properties.getString(Properties.PROPERTY_CROSSWALK);
-		    
-	        Templates template = null;
-	        
+
+
+			Templates template = null;
+
+
 	        if (!StringUtils.isEmpty(crosswalk)) {
 	        	System.out.println("Crosswalk: " + crosswalk);
-	        	
-	        	template = TransformerFactory.newInstance().newTemplates(
-	        			new StreamSource(
-	        					new FileInputStream(crosswalk)));
+
+				TransformerFactory tfactory = net.sf.saxon.TransformerFactoryImpl.newInstance();
+
+				SAXTransformerFactory stfactory = (SAXTransformerFactory) tfactory;
+
+				template = tfactory.newTemplates(new StreamSource(crosswalk));
+
 	        } 
 	        
 	        CrosswalkRG.XmlType type = CrosswalkRG.XmlType.valueOf(xmlType); 
@@ -99,7 +107,7 @@ public class App {
         CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-     //   crosswalk.setVerbose(true);
+     	//crosswalk.setVerbose(true);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
     	//importer.setVerbose(true);
@@ -171,7 +179,7 @@ public class App {
 		CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-     //   crosswalk.setVerbose(true);
+     	//crosswalk.setVerbose(true);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
     	//importer.setVerbose(true);

@@ -308,20 +308,25 @@ public class GraphUtils {
 	/**
 	 * Function to extract Scopus Author ID fom Scopus URL
 	 * @param str String 
-	 * @return Scopus Author ID or null if none
+	 * @return Scopus Author ID from scopus URL or just the str input if there is no URL
 	 */
 	public static String extractScopusAuthorId(String str) {
     	if (StringUtils.isNotEmpty(str)) {
-    		Matcher matcher = patternScopusAuthor.matcher(str);
-    		if (matcher.find()) {
-    			String scopus =  matcher.group();
-    			int pos = scopus.indexOf(PART_EQUALS);
-    			if (pos >= 0) {
-    				scopus = scopus.substring(pos + PART_EQUALS.length());
-    				if (!scopus.isEmpty())
-    					return scopus;
-    			}
-    		}
+			Matcher matcher = patternScopusAuthor.matcher(str);
+			if (matcher.find()) {
+				String scopus = matcher.group();
+				int pos = scopus.indexOf(PART_EQUALS);
+				if (pos >= 0) {
+					scopus = scopus.substring(pos + PART_EQUALS.length());
+					if (!scopus.isEmpty())
+						return scopus;
+				}
+			} else {
+				//System.out.println("Warning: this ScopusAuthorId (" + str+ ") does not match the regular expression (" + patternScopusAuthor + " Hence, the exact value has been used.");
+				return str;
+
+			}
+
     	}
     	
 		return null;
@@ -330,7 +335,7 @@ public class GraphUtils {
 	/**
 	 Function to extract Scopus Parnter ID fom Scopus URL
 	 * @param str String 
-	 * @return Scopus Parnter ID or null if none
+	 * @return Scopus Parnter ID from scopus URL or just the str input if there is no URL
 	 */
 	public static String extractScopusPartnerId(String str) {
     	if (StringUtils.isNotEmpty(str)) {
@@ -343,7 +348,10 @@ public class GraphUtils {
     				if (!scopus.isEmpty())
     					return scopus;
     			}
-    		}
+    		}else{
+    			//System.out.println("Warning: this ScopusPartnerId (" + str+ ") does not match the regular expression (" + patternScopusPartner + "). Hence, the exact value has been used.");
+    			return str;
+			}
     	}
     	
 		return null;
@@ -353,20 +361,26 @@ public class GraphUtils {
 	/**
 	 * Function to extract Scopus EID fom Scopus URL
 	 * @param str String 
-	 * @return Scopus EID or null if none
+	 * @return Scopus EID from scopus URL or just the str input if there is no URL
 	 */
 	public static String extractScopusEID(String str) {
     	if (StringUtils.isNotEmpty(str)) {
-    		Matcher matcher = patternScopusEID.matcher(str);
-    		if (matcher.find()) {
-    			String scopus =  matcher.group();
-    			int pos = scopus.indexOf(PART_EQUALS);
-    			if (pos >= 0) {
-    				scopus = scopus.substring(pos + PART_EQUALS.length());
-    				if (!scopus.isEmpty())
-    					return scopus;
-    			}
-    		}
+			Matcher matcher = patternScopusEID.matcher(str);
+			if (matcher.find()) {
+				String scopus = matcher.group();
+				int pos = scopus.indexOf(PART_EQUALS);
+				if (pos >= 0) {
+					scopus = scopus.substring(pos + PART_EQUALS.length());
+					if (!scopus.isEmpty())
+						return scopus;
+				}
+			} else{
+
+				//System.out.println("Warning: this ScopusEID (" + str+ ") does not match the regular expression (" + patternScopusEID + "). Hence, the exact value has been used.");
+				return str;
+
+			}
+
     	}
     	
 		return null;

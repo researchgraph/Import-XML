@@ -26,6 +26,7 @@ public class Properties {
 	public static final String PROPERTY_SOURCE = "source";
 	public static final String PROPERTY_CROSSWALK = "crosswalk";
 	public static final String PROPERTY_VERSIONS_FOLDER = "versions.folder";
+	public static final String PROPERTY_VERBOSE = "verbose";
 	public static final String PROPERTY_CONFIG_FILE = "config-file";
 	
 	public static final String PROPERTY_HELP = "help";
@@ -48,6 +49,7 @@ public class Properties {
 		options.addOption( "C", PROPERTY_CROSSWALK, true, "Crosswalk" );
 		options.addOption( "c", PROPERTY_CONFIG_FILE, true, "configuration file (optional)" );
 		options.addOption( "v", PROPERTY_VERSIONS_FOLDER, true, "versions folder" );
+		options.addOption( "V", PROPERTY_VERBOSE, true, "Verbose" );
 		options.addOption( "h", PROPERTY_HELP, false, "print this message" );
 
 		// parse the command line arguments

@@ -111,6 +111,7 @@ public class App {
      	//crosswalk.setVerbose(true);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
+    	neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
     	//importer.setVerbose(true);
     		    
     	ListObjectsRequest listObjectsRequest;
@@ -183,6 +184,7 @@ public class App {
      	//crosswalk.setVerbose(true);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
+		neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
     	//importer.setVerbose(true);
     		    
 		File[] files = new File(xmlFolder).listFiles();

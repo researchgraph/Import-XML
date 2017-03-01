@@ -114,7 +114,7 @@ public class App {
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
     	//neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
-    	importer.setVerbose(verbose));
+    	importer.setVerbose(verbose);
     		    
     	ListObjectsRequest listObjectsRequest;
 		ObjectListing objectListing;

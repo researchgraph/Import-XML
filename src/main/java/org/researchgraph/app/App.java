@@ -56,7 +56,6 @@ public class App {
 	        String source = properties.getString(Properties.PROPERTY_SOURCE);
 	        String crosswalk = properties.getString(Properties.PROPERTY_CROSSWALK);
 
-
 			Templates template = null;
 
 
@@ -108,11 +107,14 @@ public class App {
         CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-     	//crosswalk.setVerbose(true);
+
+	Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
+	System.out.println("Vernbose: " + verbose.tostring());
+     	crosswalk.setVerbose(verbose);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
-    	neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
-    	//importer.setVerbose(true);
+    	//neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
+    	importer.setVerbose(verbose));
     		    
     	ListObjectsRequest listObjectsRequest;
 		ObjectListing objectListing;

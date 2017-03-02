@@ -84,9 +84,9 @@
         <artifactId>jaxb2-maven-plugin</artifactId>
         <version>2.3</version>
  	    <configuration>
-	      <vmArgs> 
-            <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-          </vmArgs>
+	      <!--<vmArgs>-->
+            <!--<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>-->
+          <!--</vmArgs>-->
         </configuration>
         <executions>
           <execution>

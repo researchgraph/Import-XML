@@ -108,9 +108,10 @@ public class App {
         crosswalk.setSource(source);
         crosswalk.setType(type);
 
-	Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
-	System.out.println("Vernbose: " + verbose.toString());
-     	crosswalk.setVerbose(verbose);
+		Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
+		System.out.println("Vernbose: " + Properties.PROPERTY_VERBOSE + "|" + verbose.toString());
+
+		crosswalk.setVerbose(verbose);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
     	neo4j.setVerbose(verbose);

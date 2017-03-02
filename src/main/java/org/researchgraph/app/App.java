@@ -19,6 +19,7 @@ import javax.xml.transform.sax.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.sun.tools.jdi.BooleanValueImpl;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,7 @@ public class App {
 	        String xmlType = properties.getString(Properties.PROPERTY_XML_TYPE);
 	        String source = properties.getString(Properties.PROPERTY_SOURCE);
 	        String crosswalk = properties.getString(Properties.PROPERTY_CROSSWALK);
+			Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
 
 			Templates template = null;
 
@@ -75,17 +77,19 @@ public class App {
 	        if (!StringUtils.isEmpty(bucket) && !StringUtils.isEmpty(prefix)) {
 	        	System.out.println("S3 Bucket: " + bucket);
 	        	System.out.println("S3 Prefix: " + prefix);
-				System.out.println("Version folder: " + Properties.PROPERTY_VERSIONS_FOLDER);
+				System.out.println("Version folder: " + properties.getString(Properties.PROPERTY_VERSIONS_FOLDER));
+				System.out.println("Vernbose: " +  verbose.toString());
+
 
 	        	String versionFolder = properties.getString(Properties.PROPERTY_VERSIONS_FOLDER);
 		        if (StringUtils.isEmpty(versionFolder))
 		            throw new IllegalArgumentException("Versions Folder can not be empty");
 	        	
-	        	processS3Files(bucket, prefix, neo4jFolder, versionFolder, source, type, template);
+	        	processS3Files(bucket, prefix, neo4jFolder, versionFolder, source, type, template, verbose);
 	        } else if (!StringUtils.isEmpty(xmlFolder)) {
 	        	System.out.println("XML: " + xmlFolder);
 	        	
-	        	processFiles(xmlFolder, neo4jFolder, source, type, template);
+	        	processFiles(xmlFolder, neo4jFolder, source, type, template,verbose);
 	        } else
                 throw new IllegalArgumentException("Please provide either S3 Bucket and prefix OR a path to a XML Folder");
 
@@ -100,17 +104,14 @@ public class App {
 		}       
 	}
 	
-	private static void processS3Files(String bucket, String prefix, String neo4jFolder, 
-			String versionFolder, String source, CrosswalkRG.XmlType type, Templates template) throws Exception {
+	private static void processS3Files(String bucket, String prefix, String neo4jFolder,
+									   String versionFolder, String source, CrosswalkRG.XmlType type,
+									   Templates template, Boolean verbose) throws Exception {
         AmazonS3 s3client = new AmazonS3Client(new InstanceProfileCredentialsProvider());
         
         CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-
-		Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
-		System.out.println("Vernbose: " + Properties.PROPERTY_VERBOSE + "|" + verbose.toString());
-
 		crosswalk.setVerbose(verbose);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
@@ -179,14 +180,15 @@ public class App {
 	}
 	
 	private static void processFiles(String xmlFolder, String neo4jFolder, String source, 
-			CrosswalkRG.XmlType type, Templates template) throws Exception {
+			CrosswalkRG.XmlType type, Templates template, Boolean verbose) throws Exception {
 		CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-     	//crosswalk.setVerbose(true);
+     	crosswalk.setVerbose(verbose);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
 		neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
+		neo4j.setVerbose(verbose);
     	//importer.setVerbose(true);
     		    
 		File[] files = new File(xmlFolder).listFiles();

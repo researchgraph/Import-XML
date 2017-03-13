@@ -55,7 +55,7 @@ public class App {
 	        String xmlType = properties.getString(Properties.PROPERTY_XML_TYPE);
 	        String source = properties.getString(Properties.PROPERTY_SOURCE);
 	        String crosswalk = properties.getString(Properties.PROPERTY_CROSSWALK);
-			Boolean verbose = Boolean.parseBoolean(Properties.PROPERTY_VERBOSE);
+			Boolean verbose = Boolean.parseBoolean( properties.getString(Properties.PROPERTY_VERBOSE));
 
 			Templates template = null;
 

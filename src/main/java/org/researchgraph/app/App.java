@@ -143,7 +143,8 @@ public class App {
 				
 				file = objectSummary.getKey();
 
-		        System.out.println("Processing file: " + file);
+				Long markTime = System.currentTimeMillis();
+		        System.out.print("Processing file: " + file);
 				
 				object = s3client.getObject(new GetObjectRequest(bucket, file));
 				
@@ -164,6 +165,8 @@ public class App {
 		        	Graph graph = crosswalk.process(xml);
 					neo4j.importGraph(graph);
 				}
+				Long deltaTime= markTime == 0 ? 0 : (System.currentTimeMillis() - markTime)/1000;
+				System.out.println(", completed in seconds:" + deltaTime);
 			}
 			listObjectsRequest.setMarker(objectListing.getNextMarker());
 		} while (objectListing.isTruncated());
@@ -195,7 +198,9 @@ public class App {
 			if (!file.isDirectory()) 
 		        try (InputStream xml = new FileInputStream(file))
 		        {
-			        System.out.println("Processing file: " + file);
+
+					Long markTime = System.currentTimeMillis();
+			        System.out.print("Processing file: " + file);
 			        
 			        if (null != template) {
 						Source reader = new StreamSource(xml);
@@ -213,6 +218,9 @@ public class App {
 						Graph graph = crosswalk.process(xml);
 						neo4j.importGraph(graph);
 					}
+
+					Long deltaTime= markTime == 0 ? 0 : (System.currentTimeMillis() - markTime)/1000;
+					System.out.println(", completed in seconds:" + deltaTime);
 		        }
 		
 		System.out.println("Done");

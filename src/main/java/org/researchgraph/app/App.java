@@ -56,6 +56,7 @@ public class App {
 	        String source = properties.getString(Properties.PROPERTY_SOURCE);
 	        String crosswalk = properties.getString(Properties.PROPERTY_CROSSWALK);
 			Boolean verbose = Boolean.parseBoolean( properties.getString(Properties.PROPERTY_VERBOSE));
+			Boolean profilingEnabled=Boolean.parseBoolean(properties.getString(Properties.PROPERTY_PROFILING));
 
 			Templates template = null;
 
@@ -78,17 +79,21 @@ public class App {
 	        	System.out.println("S3 Prefix: " + prefix);
 				System.out.println("Version folder: " + properties.getString(Properties.PROPERTY_VERSIONS_FOLDER));
 				System.out.println("Vernbose: " +  verbose.toString());
+                System.out.println("Profiling enabled: " +  profilingEnabled.toString());
+
 
 
 	        	String versionFolder = properties.getString(Properties.PROPERTY_VERSIONS_FOLDER);
+
+
 		        if (StringUtils.isEmpty(versionFolder))
 		            throw new IllegalArgumentException("Versions Folder can not be empty");
 	        	
 	        	processS3Files(bucket, prefix, neo4jFolder, versionFolder, source, type, template, verbose);
 	        } else if (!StringUtils.isEmpty(xmlFolder)) {
 	        	System.out.println("XML: " + xmlFolder);
-	        	
-	        	processFiles(xmlFolder, neo4jFolder, source, type, template,verbose);
+
+	        	processFiles(xmlFolder, neo4jFolder, source, type, template,verbose,profilingEnabled);
 	        } else
                 throw new IllegalArgumentException("Please provide either S3 Bucket and prefix OR a path to a XML Folder");
 
@@ -105,16 +110,16 @@ public class App {
 	
 	private static void processS3Files(String bucket, String prefix, String neo4jFolder,
 									   String versionFolder, String source, CrosswalkRG.XmlType type,
-									   Templates template, Boolean verbose) throws Exception {
+									   Templates template, Boolean verboseEnabled) throws Exception {
         AmazonS3 s3client = new AmazonS3Client(new InstanceProfileCredentialsProvider());
         
         CrosswalkRG crosswalk = new CrosswalkRG();
         crosswalk.setSource(source);
         crosswalk.setType(type);
-		crosswalk.setVerbose(verbose);
+		crosswalk.setVerbose(verboseEnabled);
         
     	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
-    	neo4j.setVerbose(verbose);
+    	neo4j.setVerbose(verboseEnabled);
     		    
     	ListObjectsRequest listObjectsRequest;
 		ObjectListing objectListing;
@@ -182,16 +187,16 @@ public class App {
 	}
 	
 	private static void processFiles(String xmlFolder, String neo4jFolder, String source, 
-			CrosswalkRG.XmlType type, Templates template, Boolean verbose) throws Exception {
+			CrosswalkRG.XmlType type, Templates template, Boolean verboseEnabled, Boolean profilingEnabled) throws Exception {
 		CrosswalkRG crosswalk = new CrosswalkRG();
 		crosswalk.setSource(source);
 		crosswalk.setType(type);
-		crosswalk.setVerbose(verbose);
+		crosswalk.setVerbose(verboseEnabled);
 
 		Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
-		neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
-		neo4j.setVerbose(verbose);
-		//importer.setVerbose(true);
+		neo4j.setVerbose(verboseEnabled);
+
+		Graph graph;
 
 		File[] files = new File(xmlFolder).listFiles();
 		for (File file : files)
@@ -200,27 +205,51 @@ public class App {
 					try (InputStream xml = new FileInputStream(file)) {
 
 						Long markTime = System.currentTimeMillis();
+						Long minorMarkTime =new Long(0);
+						Long deltaTime = new Long(0);
 						System.out.print("Processing file: " + file);
 
 						if (null != template) {
 							Source reader = new StreamSource(xml);
 							StringWriter writer = new StringWriter();
-
 							Transformer transformer = template.newTransformer();
+
+                            minorMarkTime=System.currentTimeMillis(); //Used for performance profiling
 							transformer.transform(reader, new StreamResult(writer));
+                            if (profilingEnabled) {
+                                deltaTime = System.currentTimeMillis() - minorMarkTime;
+                                System.out.println(" ,transform in milliseconds:" + deltaTime);
+                            }
 
 							InputStream stream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
 
-							Graph graph = crosswalk.process(stream);
-							neo4j.importGraph(graph);
+							minorMarkTime=System.currentTimeMillis(); //Used for performance profiling
+							graph = crosswalk.process(stream);
+							if (profilingEnabled) {
+								deltaTime = System.currentTimeMillis() - minorMarkTime;
+								System.out.println("crosswalk.process in milliseconds:" + deltaTime);
+							}
 
 						} else {
-							Graph graph = crosswalk.process(xml);
-							neo4j.importGraph(graph);
+							minorMarkTime=System.currentTimeMillis(); //Used for performance profiling
+							graph = crosswalk.process(xml);
+							if (profilingEnabled) {
+								deltaTime = System.currentTimeMillis() - minorMarkTime;
+								System.out.println("crosswalk.process in milliseconds:" + deltaTime);
+							}
 						}
 
-						Long deltaTime = markTime == 0 ? 0 : (System.currentTimeMillis() - markTime) / 1000;
-						System.out.println(", completed in seconds:" + deltaTime);
+						minorMarkTime=System.currentTimeMillis(); //Used for performance profiling
+						neo4j.importGraph(graph, profilingEnabled);
+
+						if (profilingEnabled) {
+							deltaTime = System.currentTimeMillis() - minorMarkTime;
+							System.out.println("neo4j.importGraph in milliseconds:" + deltaTime);
+						}
+
+
+						deltaTime = markTime == 0 ? 0 : (System.currentTimeMillis() - markTime) / 1000;
+						System.out.println(",completed in seconds:" + deltaTime);
 					}
 				}
 		

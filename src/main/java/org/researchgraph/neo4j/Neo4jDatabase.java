@@ -297,9 +297,14 @@ public class Neo4jDatabase implements GraphImporter {
 	public IndexDefinition createIndex(String label, String key) {
 		return createIndex(Label.label(label), key);
 	}
-	
-	public void importGraph(Graph graph) {
-	
+
+    public void importGraph(Graph graph) {
+        importGraph(graph,false);
+    }
+
+	public void importGraph(Graph graph, Boolean profilingEnabled) {
+
+
 		// schema can not be imported in the same transaction as nodes and relationships
 		try ( Transaction tx = graphDb.beginTx() ) 
 		{
@@ -310,8 +315,20 @@ public class Neo4jDatabase implements GraphImporter {
 		
 		try ( Transaction tx = graphDb.beginTx() ) 
 		{
+
+            Long minorMarkTime=System.currentTimeMillis(); //for performance profiling
+            Long deltaTime =new Long(0);
 			_importNodes(graph.getNodes());
+            if (profilingEnabled) {
+                deltaTime = System.currentTimeMillis() - minorMarkTime;
+                System.out.println("_importNodes in milliseconds:" + deltaTime);
+            }
+            minorMarkTime=System.currentTimeMillis(); //for performance profiling
 			_importRelationships(graph.getRelationships(), true);
+            if (profilingEnabled) {
+                deltaTime = System.currentTimeMillis() - minorMarkTime;
+                System.out.println("_importRelationships in milliseconds:" + deltaTime);
+            }
 			
 			tx.success();
 		}

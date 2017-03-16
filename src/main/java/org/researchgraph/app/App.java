@@ -184,44 +184,45 @@ public class App {
 	private static void processFiles(String xmlFolder, String neo4jFolder, String source, 
 			CrosswalkRG.XmlType type, Templates template, Boolean verbose) throws Exception {
 		CrosswalkRG crosswalk = new CrosswalkRG();
-        crosswalk.setSource(source);
-        crosswalk.setType(type);
-     	crosswalk.setVerbose(verbose);
-        
-    	Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
+		crosswalk.setSource(source);
+		crosswalk.setType(type);
+		crosswalk.setVerbose(verbose);
+
+		Neo4jDatabase neo4j = new Neo4jDatabase(neo4jFolder);
 		neo4j.setVerbose(Boolean.parseBoolean(Properties.PROPERTY_VERBOSE));
 		neo4j.setVerbose(verbose);
-    	//importer.setVerbose(true);
-    		    
+		//importer.setVerbose(true);
+
 		File[] files = new File(xmlFolder).listFiles();
-		for (File file : files) 
-			if (!file.isDirectory()) 
-		        try (InputStream xml = new FileInputStream(file))
-		        {
+		for (File file : files)
+			if (!file.isDirectory())
+				if (file.getName().endsWith(".xml") || file.getName().endsWith(".XML")){
+					try (InputStream xml = new FileInputStream(file)) {
 
-					Long markTime = System.currentTimeMillis();
-			        System.out.print("Processing file: " + file);
-			        
-			        if (null != template) {
-						Source reader = new StreamSource(xml);
-						StringWriter writer = new StringWriter();
-						
-						Transformer transformer = template.newTransformer(); 
-						transformer.transform(reader, new StreamResult(writer));
-						
-						InputStream stream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
-						
-						Graph graph = crosswalk.process(stream);
-						neo4j.importGraph(graph);
+						Long markTime = System.currentTimeMillis();
+						System.out.print("Processing file: " + file);
 
-			        } else {
-						Graph graph = crosswalk.process(xml);
-						neo4j.importGraph(graph);
+						if (null != template) {
+							Source reader = new StreamSource(xml);
+							StringWriter writer = new StringWriter();
+
+							Transformer transformer = template.newTransformer();
+							transformer.transform(reader, new StreamResult(writer));
+
+							InputStream stream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
+
+							Graph graph = crosswalk.process(stream);
+							neo4j.importGraph(graph);
+
+						} else {
+							Graph graph = crosswalk.process(xml);
+							neo4j.importGraph(graph);
+						}
+
+						Long deltaTime = markTime == 0 ? 0 : (System.currentTimeMillis() - markTime) / 1000;
+						System.out.println(", completed in seconds:" + deltaTime);
 					}
-
-					Long deltaTime= markTime == 0 ? 0 : (System.currentTimeMillis() - markTime)/1000;
-					System.out.println(", completed in seconds:" + deltaTime);
-		        }
+				}
 		
 		System.out.println("Done");
 		

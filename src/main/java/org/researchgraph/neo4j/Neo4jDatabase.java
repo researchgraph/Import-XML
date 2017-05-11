@@ -587,35 +587,43 @@ public class Neo4jDatabase implements GraphImporter {
 	}
 	
 	private Node _importNode(GraphNode graphNode) {
-		if (graphNode.isBroken() || graphNode.isDeleted())
-			return null;
-		
-		GraphKey key = graphNode.getKey();
-		
+        if (graphNode.isBroken() || graphNode.isDeleted())
+            return null;
+
+        GraphKey key = graphNode.getKey();
+
+		/*
 		if (StringUtils.isEmpty(key.getLabel()))
 			throw new IllegalArgumentException("Node Key Label can not be empty");
 		if (StringUtils.isEmpty(key.getProperty()))
-			throw new IllegalArgumentException("Node Key Property can not be null");
-		if (null == key.getValue())
+            throw new IllegalArgumentException("Node Key Property can not be null");
+        if (null == key.getValue())
 			throw new IllegalArgumentException("Node Key Value can not be null");
 			
 		if (verbose) {
 			System.out.println("Importing Node (" + key + ")");
 		}
 		
-		Node node = _findAnyNode(key);
-		if (null == node) {
-			node = _createNode();
-			
-			_importIndex(node, key);
-			_importIndexes(node, graphNode.getIndexSet());
-		} else  {
-			++nodesUpdated;
-		}
-			
-		_importLabels(node, graphNode.getLabels());
-		_importProperties(node, graphNode.getProperties());
-		
+		Node node = _findAnyNode(key);*/
+        Node node;
+        //if (null == node) {
+        try {
+            node = _createNode();
+
+            _importIndex(node, key);
+            _importIndexes(node, graphNode.getIndexSet());
+
+
+            _importLabels(node, graphNode.getLabels());
+            _importProperties(node, graphNode.getProperties());
+
+        } catch (Exception e) {
+            return null;
+        }
+		//} else  {
+		//	++nodesUpdated;
+		//}
+
 		return node;
 	}
 		

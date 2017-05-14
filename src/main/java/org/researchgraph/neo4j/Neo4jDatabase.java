@@ -175,7 +175,7 @@ public class Neo4jDatabase implements GraphImporter {
                         "\n%d nodes have been updated." +
                         "\n%d relationships have been created." +
                         "\n%d relationships have been updated." +
-                        "\n%d relationship keys are unknown in this graph.",
+                        "\n%d relation keys are unknown in this graph.",
 				nodesCreated, nodesUpdated, relationshipsCreated, relationshipsUpdated, unknownRelationships.size()));
         if (unknownRelationships.size()>0) {
             String logFileAddress ="log_unknown_relations.txt";
@@ -615,39 +615,31 @@ public class Neo4jDatabase implements GraphImporter {
 
         GraphKey key = graphNode.getKey();
 
-		/*
-		if (StringUtils.isEmpty(key.getLabel()))
-			throw new IllegalArgumentException("Node Key Label can not be empty");
-		if (StringUtils.isEmpty(key.getProperty()))
+        if (StringUtils.isEmpty(key.getLabel()))
+            throw new IllegalArgumentException("Node Key Label can not be empty");
+        if (StringUtils.isEmpty(key.getProperty()))
             throw new IllegalArgumentException("Node Key Property can not be null");
         if (null == key.getValue())
-			throw new IllegalArgumentException("Node Key Value can not be null");
-			
-		if (verbose) {
-			System.out.println("Importing Node (" + key + ")");
-		}
-		
-		Node node = _findAnyNode(key);*/
-        Node node;
-        //if (null == node) {
-        try {
+            throw new IllegalArgumentException("Node Key Value can not be null");
+
+        if (verbose) {
+            System.out.println("Importing Node (" + key + ")");
+        }
+
+        Node node = _findAnyNode(key);
+        if (null == node) {
             node = _createNode();
 
             _importIndex(node, key);
             _importIndexes(node, graphNode.getIndexSet());
-
-
-            _importLabels(node, graphNode.getLabels());
-            _importProperties(node, graphNode.getProperties());
-
-        } catch (Exception e) {
-            return null;
+        } else  {
+            ++nodesUpdated;
         }
-		//} else  {
-		//	++nodesUpdated;
-		//}
 
-		return node;
+        _importLabels(node, graphNode.getLabels());
+        _importProperties(node, graphNode.getProperties());
+
+        return node;
 	}
 		
 	private void _importRelationship(GraphRelationship graphRelationship, boolean storeUnknown) {

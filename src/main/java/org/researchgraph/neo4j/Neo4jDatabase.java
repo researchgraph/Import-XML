@@ -1,8 +1,6 @@
 package org.researchgraph.neo4j;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -173,9 +171,34 @@ public class Neo4jDatabase implements GraphImporter {
 	}
 	
 	public void printStatistics(PrintStream out) {
-		out.println( String.format("%d nodes has been created.\n%d nodes has been updated.\n%d relationships has been created.\n%d relationships has been updated.\n%d relationships keys has been invalid.", 
-				nodesCreated, nodesUpdated, relationshipsCreated, relationshipsUpdated, unknownRelationships.size()) );
-	}
+		out.println(String.format("%d nodes have been created." +
+                        "\n%d nodes have been updated." +
+                        "\n%d relationships have been created." +
+                        "\n%d relationships have been updated." +
+                        "\n%d relationship keys are unknown in this graph.",
+				nodesCreated, nodesUpdated, relationshipsCreated, relationshipsUpdated, unknownRelationships.size()));
+        if (unknownRelationships.size()>0) {
+            String logFileAddress ="log_unknown_relations.txt";
+            File file= new File(logFileAddress);
+            out.println("Please find the list of the unknown relationship keys at: " + file.getAbsolutePath());
+            logUnknownRelationships("log_unknown_relations.txt");
+        }
+    }
+
+    private void logUnknownRelationships(String logFileAddress) {
+            try {
+                FileWriter writer = new FileWriter(logFileAddress);
+                for (Map.Entry<String, List<GraphRelationship>> entry : unknownRelationships.entrySet()) {
+                    writer.write(entry.getKey().toString() + "\n");
+                }
+                writer.flush();
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
 	
 	public long getSourcesConnectionsCount(String source1, String source2) {
 		try ( Transaction ignored = graphDb.beginTx() ) 

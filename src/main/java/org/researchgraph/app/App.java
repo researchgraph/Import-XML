@@ -73,9 +73,6 @@ public class App {
             neo4j.setVerbose(verbose);
 
 
-
-
-
             //Set Crosswalk settings
             CrosswalkRG.XmlType type = CrosswalkRG.XmlType.valueOf(xmlType);
             crosswalkRG = new CrosswalkRG();
@@ -108,6 +105,7 @@ public class App {
                 crosswalkRG.printStatistics(System.out);
             }
 
+            neo4j.printStatistics(System.out);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,54 +149,32 @@ public class App {
                 InputStream xml = object.getObjectContent();
 
                 processFile(template, xml);
-//				if (null != template) {
-//                  Long markTime = System.currentTimeMillis();
-//					Source reader = new StreamSource(object.getObjectContent());
-//					StringWriter writer = new StringWriter();
-//
-//					Transformer transformer = template.newTransformer();
-//					transformer.transform(reader, new StreamResult(writer));
-//
-//					InputStream stream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
-//
-//					Graph graph = crosswalkRG.process(stream);
-//					neo4j.importGraph(graph);
-//		        } else {
-//		        	InputStream xml = object.getObjectContent();
-//
-//		        	Graph graph = crosswalkRG.process(xml);
-//					neo4j.importGraph(graph);
-//				}
-//				Long deltaTime= markTime == 0 ? 0 : (System.currentTimeMillis() - markTime)/1000;
-//				System.out.println(", completed in seconds:" + deltaTime);
 			}
 			listObjectsRequest.setMarker(objectListing.getNextMarker());
 		} while (objectListing.isTruncated());
 	    
 	    Files.write(Paths.get(versionFolder, source), latest.getBytes());
 
-		System.out.println("Done");
+		System.out.println(bucket + prefix + " is done.");
 
-		crosswalkRG.printStatistics(System.out);
-		neo4j.printStatistics(System.out);
-		
-		
 	}
 
 	private static void processFiles(String xmlFolder, Templates template) throws Exception {
 
 		File[] files = new File(xmlFolder).listFiles();
 		for (File file : files)
-			if (!file.isDirectory())
-				if (file.getName().endsWith(".xml") || file.getName().endsWith(".XML")){
-					try (InputStream xml = new FileInputStream(file)) {
+			if (file.isDirectory())
+            {
+                processFiles(file.getAbsolutePath(), template);
+            }else {
+                if (file.getName().endsWith(".xml") || file.getName().endsWith(".XML")) {
+                    try (InputStream xml = new FileInputStream(file)) {
                         System.out.println("Processing file: " + file);
                         processFile(template, xml);
-					}
-				}
-
-		System.out.println("Done");
-		neo4j.printStatistics(System.out);
+                    }
+                }
+            }
+		System.out.println(xmlFolder + " is done.");
 	}
 
     private static void processFile(Templates template, InputStream xml) throws Exception {
@@ -243,11 +219,12 @@ public class App {
         if (profilingEnabled) {
             deltaTime = System.currentTimeMillis() - minorMarkTime;
             System.out.println("neo4j.importGraph in milliseconds:" + deltaTime);
+
+            deltaTime = markTime == 0 ? 0 : (System.currentTimeMillis() - markTime);
+            System.out.println("completed in milliseconds:" + deltaTime);
         }
 
 
-        deltaTime = markTime == 0 ? 0 : (System.currentTimeMillis() - markTime) / 1000;
-        System.out.println("completed in seconds:" + deltaTime);
     }
 
 }

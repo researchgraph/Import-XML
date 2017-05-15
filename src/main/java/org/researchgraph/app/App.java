@@ -144,7 +144,7 @@ public class App {
 			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
 
 				file = objectSummary.getKey();
-		        System.out.print("Processing file: " + file);
+		        System.out.println("Processing file: " + file);
 				object = s3client.getObject(new GetObjectRequest(bucket, file));
                 InputStream xml = object.getObjectContent();
 
